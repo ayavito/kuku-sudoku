@@ -30,8 +30,6 @@ button{
   grid-template-columns: repeat(9, 40px);
   grid-template-rows: repeat(9, 40px);
   gap: 0;
-  justify-content: center;
-  margin-top: 20px;
 }
 
 .cell {
@@ -39,10 +37,6 @@ button{
   height: 40px;
   border: 1px solid black;
   box-sizing: border-box;
-}
-
-#board {
-  border: 3px solid black;
 }
 
 /* 3列ごとの太い線 */
@@ -76,4 +70,15 @@ button{
 
 .locked {
   background-color: #ff6666 !important;
+}
+
+#board-frame {
+  display: inline-block;
+  border: 3px solid black;
+}
+
+#main-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }

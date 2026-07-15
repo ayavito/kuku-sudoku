@@ -28,13 +28,17 @@
 </div>
 
   <button onclick="startGame()">🎮 あそぶ</button>
-  <button>🖨️ プリント</button>
-  <button>📖 あそびかた</button>
+  <div id="main-buttons">
+   <button>🎮あそぶ</button>
+   <button>🖨️いんさつ</button>
+  </div>
 </div>
 
 <div id="game" style="display:none;">
   <h2>九九ナンプレ</h2>
-  <div id="board"></div>
+  <div id="board-frame">
+   <div id="board"></div>
+  </div>
 </div>
 
 <script src="script.js"></script>
