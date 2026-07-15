@@ -73,3 +73,7 @@ button{
   font-size: 22px;
   padding: 12px 30px;
 }
+
+.locked {
+  background-color: #ff6666;
+}
