@@ -28,9 +28,10 @@ button{
 #board {
   display: grid;
   grid-template-columns: repeat(9, 40px);
-  gap: 2px;
+  gap: 0;
   justify-content: center;
   margin-top: 20px;
+  border: 4px solid black;
 }
 
 .cell {

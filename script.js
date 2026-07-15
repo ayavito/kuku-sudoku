@@ -1,3 +1,17 @@
+let selectedDan = null;
+
+function selectDan(dan) {
+  selectedDan = dan;
+
+  const buttons = document.querySelectorAll("#dan-buttons button");
+
+  buttons.forEach(button => {
+    button.style.backgroundColor = "";
+  });
+
+  buttons[dan - 1].style.backgroundColor = "#87cefa";
+}
+
 function startGame() {
   document.querySelector(".container").style.display = "none";
   document.getElementById("game").style.display = "block";
