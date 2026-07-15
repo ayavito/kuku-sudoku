@@ -75,5 +75,5 @@ button{
 }
 
 .locked {
-  background-color: #ff6666;
+  background-color: #ff6666 !important;
 }

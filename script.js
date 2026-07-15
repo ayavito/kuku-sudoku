@@ -1,7 +1,5 @@
 let selectedDan = null;
 
-let selectedDan = null;
-
 function selectDan(dan) {
   const buttons = document.querySelectorAll("#dan-buttons button");
   const button = buttons[dan - 1];
@@ -12,7 +10,7 @@ function selectDan(dan) {
 
     setTimeout(() => {
       button.classList.remove("locked");
-    }, 300);
+    }, 1000);
 
     return;
   }
