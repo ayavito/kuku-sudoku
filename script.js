@@ -1,15 +1,30 @@
 let selectedDan = null;
 
-function selectDan(dan) {
-  selectedDan = dan;
+let selectedDan = null;
 
+function selectDan(dan) {
   const buttons = document.querySelectorAll("#dan-buttons button");
+  const button = buttons[dan - 1];
+
+  // 2のだん以外は選択不可
+  if (dan !== 2) {
+    button.classList.add("locked");
+
+    setTimeout(() => {
+      button.classList.remove("locked");
+    }, 300);
+
+    return;
+  }
+
+  // 2のだんを選択
+  selectedDan = dan;
 
   buttons.forEach(button => {
     button.style.backgroundColor = "";
   });
 
-  buttons[dan - 1].style.backgroundColor = "#87cefa";
+  button.style.backgroundColor = "#87cefa";
 }
 
 function startGame() {

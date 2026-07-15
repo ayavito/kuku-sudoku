@@ -32,17 +32,17 @@ button{
   gap: 0;
   justify-content: center;
   margin-top: 20px;
-  border: 3px solid black;
 }
 
 .cell {
   width: 40px;
   height: 40px;
   border: 1px solid black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   box-sizing: border-box;
+}
+
+#board {
+  border: 3px solid black;
 }
 
 /* 3列ごとの太い線 */
