@@ -87,3 +87,15 @@ button{
 #game {
   text-align: center;
 }
+
+#level-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0 25px;
+}
+
+.level-btn {
+  font-size: 16px;
+  padding: 8px 16px;
+}

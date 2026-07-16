@@ -1,4 +1,5 @@
 let selectedDan = null;
+let selectedLevel = null;
 
 function selectDan(dan) {
   const buttons = document.querySelectorAll("#dan-buttons button");
@@ -26,6 +27,12 @@ function selectDan(dan) {
 }
 
 function startGame() {
+
+  if (selectedDan === null || selectedLevel === null) {
+    alert("だん と レベル をえらんでね！");
+    return;
+  }
+
   document.querySelector(".container").style.display = "none";
   document.getElementById("game").style.display = "block";
 
@@ -43,4 +50,27 @@ function createBoard() {
     cell.className = "cell";
     board.appendChild(cell);
   }
+}
+
+function selectLevel(level) {
+
+  selectedLevel = level;
+
+  const buttons = document.querySelectorAll("#level-buttons button");
+
+  buttons.forEach(button => {
+    button.style.backgroundColor = "";
+  });
+
+  buttons[level - 1].style.backgroundColor = "#87cefa";
+}
+
+function printGame() {
+
+  if (selectedDan === null || selectedLevel === null) {
+    alert("だん と レベル をえらんでね！");
+    return;
+  }
+
+  // 印刷画面へ
 }
