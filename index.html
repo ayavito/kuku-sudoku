@@ -37,19 +37,24 @@
 
  <div id="main-buttons">
   <button class="menu-btn" onclick="startGame()">🎮 あそぶ</button>
-  <button class="menu-btn">🖨️ いんさつ</button>
+  <button class="menu-btn" onclick="printGame()">🖨️ いんさつ</button>
 </div>
 
-<button class="menu-btn" id="howto-btn">📖 あそびかた</button>
+<button class="menu-btn" id="howto-btn" onclick="showHowTo()">📖 あそびかた</button>
 </div>
+
 
 <div id="game" style="display:none;">
-  <h2>九九ナンプレ</h2>
-  <div id="board-frame">
-   <div id="board"></div>
-  </div>
-</div>
 
+  <button class="menu-btn" onclick="goHome()">← もどる</button>
+
+  <h2>九九ナンプレ</h2>
+
+  <div id="board-frame">
+    <div id="board"></div>
+  </div>
+
+</div>
 <script src="script.js"></script>
 
 </body>
