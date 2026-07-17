@@ -72,5 +72,19 @@ function printGame() {
     return;
   }
 
-  // 印刷画面へ
+  alert("いんさつ きのうは じゅんびちゅうです！");
 }
+
+function goHome() {
+
+  document.getElementById("game").style.display = "none";
+  document.querySelector(".container").style.display = "block";
+
+  document.getElementById("board").innerHTML = "";
+
+}
+
+function showHowTo() {
+  alert("あそびかたは じゅんびちゅうです！");
+}
+
