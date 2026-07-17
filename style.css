@@ -132,6 +132,8 @@ button {
   margin: 0;
   text-align: center;
   margin-right: 90px;
+  position: relative;
+  top: -3px;
 }
 
 #board-frame {
