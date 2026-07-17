@@ -89,6 +89,12 @@ button {
   font-size: 18px;
 }
 
+.back-btn {
+  width: 90px;
+  height: 36px;
+  font-size: 16px;
+}
+
 #howto-btn {
   width: 292px;
   height: 44px;
@@ -106,9 +112,15 @@ button {
 /* --------------------
    ゲーム画面
 -------------------- */
-
 #game {
+  max-width: 420px;
+  margin: 20px auto;
   text-align: center;
+}
+
+.back-btn {
+  display: block;
+  margin-bottom: 10px;
 }
 
 #board-frame {
