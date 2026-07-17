@@ -1,28 +1,120 @@
-body{
-    margin:0;
-    background:#f5f7fb;
-    font-family:sans-serif;
+body {
+  margin: 0;
+  background: #f5f7fb;
+  font-family: sans-serif;
 }
 
-.container{
-    max-width:400px;
-    margin:40px auto;
-    text-align:center;
+.container {
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
 }
 
-h1{
-    color:#2c3e50;
+.container h1 {
+  color: #2c3e50;
+  margin-bottom: 5px;
 }
 
-button{
-    width:100%;
-    margin:10px 0;
-    padding:18px;
-    font-size:22px;
-    border:none;
-    border-radius:12px;
-    background:#4CAF50;
-    color:white;
+.container p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.container h2 {
+  margin: 10px 0 5px;
+  font-size: 18px;
+}
+
+/* --------------------
+   共通ボタン
+-------------------- */
+
+button {
+  border: none;
+  border-radius: 12px;
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+/* --------------------
+   段ボタン
+-------------------- */
+
+#dan-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 300px;
+  margin: 8px auto;
+}
+
+.dan-btn {
+  width: 90px;
+  height: 40px;
+  font-size: 15px;
+}
+
+/* --------------------
+   レベルボタン
+-------------------- */
+
+#level-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 8px auto 15px;
+}
+
+.level-btn {
+  width: 90px;
+  height: 40px;
+  font-size: 15px;
+}
+
+/* --------------------
+   メニューボタン
+-------------------- */
+
+#main-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.menu-btn {
+  width: 140px;
+  height: 44px;
+  font-size: 18px;
+}
+
+#howto-btn {
+  width: 292px;
+  height: 44px;
+  font-size: 18px;
+}
+
+/* --------------------
+   ロック表示
+-------------------- */
+
+.locked {
+  background-color: #ff6666 !important;
+}
+
+/* --------------------
+   ゲーム画面
+-------------------- */
+
+#game {
+  text-align: center;
+}
+
+#board-frame {
+  display: inline-block;
+  border: 3px solid black;
+  margin: 20px auto;
 }
 
 #board {
@@ -39,63 +131,15 @@ button{
   box-sizing: border-box;
 }
 
-/* 3列ごとの太い線 */
+/* 3列ごとの太線 */
+
 .cell:nth-child(3n) {
   border-right: 3px solid black;
 }
 
-/* 3行ごとの太い線 */
+/* 3行ごとの太線 */
+
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) {
   border-bottom: 3px solid black;
-}
-
-#dan-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 300px;
-  margin: 20px auto;
-}
-
-.dan-btn {
-  font-size: 16px;
-  padding: 8px;
-}
-
-.container button:not(.dan-btn) {
-  font-size: 22px;
-  padding: 12px 30px;
-}
-
-.locked {
-  background-color: #ff6666 !important;
-}
-
-#board-frame {
-  display: inline-block;
-  border: 3px solid black;
-  margin-top: 20px;
-}
-
-#main-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-#game {
-  text-align: center;
-}
-
-#level-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 15px 0 25px;
-}
-
-.level-btn {
-  font-size: 16px;
-  padding: 8px 16px;
 }
