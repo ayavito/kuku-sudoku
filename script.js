@@ -33,10 +33,13 @@ function startGame() {
     return;
   }
 
-  document.querySelector(".container").style.display = "none";
-  document.getElementById("game").style.display = "block";
+document.querySelector(".container").style.display = "none";
+document.getElementById("game").style.display = "block";
 
-  createBoard();
+document.getElementById("game-info").textContent =
+  `${selectedDan}のだん Lv.${selectedLevel}`;
+
+createBoard();
 }
 
 
