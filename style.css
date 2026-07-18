@@ -123,18 +123,16 @@ button {
 }
 
 #game-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 90px 1fr 90px;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 #game-header h2 {
-  flex: 1;
   margin: 0;
   text-align: center;
-  margin-right: 90px;
-  position: relative;
-  top: -5px;
+  font-size: 26px;
 }
 
 #board-frame {
@@ -168,4 +166,10 @@ button {
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) {
   border-bottom: 3px solid black;
+}
+
+#game-info {
+  text-align: right;
+  font-size: 14px;
+  color: #666;
 }
