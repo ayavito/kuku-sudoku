@@ -1,6 +1,15 @@
 let selectedDan = null;
 let selectedLevel = null;
 
+function updateAnswerButtons() {
+  const buttons = document.querySelectorAll(".answer-btn");
+
+  buttons.forEach(button => {
+    const num = button.dataset.num;
+    button.textContent = `${selectedDan}×${num}`;
+  });
+}
+
 function selectDan(dan) {
   const buttons = document.querySelectorAll("#dan-buttons button");
   const button = buttons[dan - 1];
@@ -39,6 +48,7 @@ document.getElementById("game").style.display = "block";
 document.getElementById("game-info").textContent =
   `${selectedDan}のだん Lv.${selectedLevel}`;
 
+updateAnswerButtons();
 createBoard();
 }
 
