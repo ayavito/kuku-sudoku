@@ -182,7 +182,7 @@ button {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
-  margin: 0 auto 28px;
+  margin: 0 auto 8px;
 }
 
 .answer-btn,
@@ -204,7 +204,7 @@ button {
 /* ヒント・チェック・ミス */
 .control-row {
   width: 360px;
-  margin: 0 auto 28px;
+  margin: 12 auto 16px;
 
   display: flex;
   justify-content: center;
@@ -239,7 +239,7 @@ button {
 /* 下のボタン */
 .bottom-buttons {
   width: 360px;
-  margin: 0 auto;
+  margin: 0 auto 10px;
 
   display: flex;
   gap: 10px;
