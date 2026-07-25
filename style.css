@@ -171,3 +171,93 @@ button {
   font-size: 14px;
   color: #666;
 }
+
+/* --------------------
+   ゲーム操作ボタン
+-------------------- */
+
+/* 回答ボタン（盤面と同じ幅） */
+.answer-buttons {
+  width: 360px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin: 0 auto 28px;
+}
+
+.answer-btn,
+.erase-btn {
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.answer-btn {
+  background: #4CAF50;
+}
+
+.erase-btn {
+  background: #9E9E9E;
+  color: white;
+}
+
+/* ヒント・チェック・ミス */
+.control-row {
+  width: 360px;
+  margin: 0 auto 28px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.hint-btn,
+.check-btn {
+  width: 110px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.hint-btn {
+  background: #ffb6d5;
+  color: #333;
+}
+
+.check-btn {
+  background: #ffe066;
+  color: #333;
+}
+
+.miss-count {
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* 下のボタン */
+.bottom-buttons {
+  width: 360px;
+  margin: 0 auto;
+
+  display: flex;
+  gap: 10px;
+}
+
+.restart-btn,
+.next-btn {
+  flex: 1;
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.restart-btn {
+  background: #4A90E2;
+}
+
+.next-btn {
+  background: #f4b183;
+  color: #333;
+}
