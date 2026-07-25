@@ -234,6 +234,7 @@ button {
   color: red;
   font-size: 14px;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 /* 下のボタン */
