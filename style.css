@@ -204,7 +204,7 @@ button {
 /* ヒント・チェック・ミス */
 .control-row {
   width: 360px;
-  margin: 12 auto 16px;
+  margin: 12px auto 16px;
 
   display: flex;
   justify-content: center;
@@ -214,9 +214,9 @@ button {
 
 .hint-btn,
 .check-btn {
-  width: 95px;
-  height: 42px;
-  font-size: 18px;
+  width: 85px;
+  height: 38px;
+  font-size: 16px;
   font-weight: bold;
 }
 
@@ -232,7 +232,7 @@ button {
 
 .miss-count {
   color: red;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -248,8 +248,8 @@ button {
 .restart-btn,
 .next-btn {
   flex: 1;
-  height: 44px;
-  font-size: 18px;
+  height: 38px;
+  font-size: 16px;
   font-weight: bold;
 }
 
