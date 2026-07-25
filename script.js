@@ -1,5 +1,6 @@
 let selectedDan = null;
 let selectedLevel = null;
+let selectedCell = null;
 
 function updateAnswerButtons() {
   const buttons = document.querySelectorAll(".answer-btn");
@@ -61,6 +62,19 @@ function createBoard() {
   for (let i = 0; i < 81; i++) {
     const cell = document.createElement("div");
     cell.className = "cell";
+
+    cell.addEventListener("click", () => {
+
+      // 前に選んだマスの色を戻す
+      if (selectedCell) {
+        selectedCell.classList.remove("selected");
+      }
+
+      // 新しいマスを選択
+      selectedCell = cell;
+      cell.classList.add("selected");
+    });
+
     board.appendChild(cell);
   }
 }

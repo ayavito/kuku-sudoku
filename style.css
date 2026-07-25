@@ -262,3 +262,11 @@ button {
   background: #f4b183;
   color: #333;
 }
+
+/* --------------------
+   選択中のマス
+-------------------- */
+
+.cell.selected {
+  background-color: #bde3ff;
+}
