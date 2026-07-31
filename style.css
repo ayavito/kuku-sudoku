@@ -1,272 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap');
+
 body {
-  margin: 0;
-  background: #f5f7fb;
-  font-family: sans-serif;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    touch-action: manipulation;
+    user-select: none;
 }
 
-.container {
-  max-width: 400px;
-  margin: 20px auto;
-  text-align: center;
+/* 9x9 ナンプレ盤面 */
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border: 3px solid #334155;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
-.container h1 {
-  color: #2c3e50;
-  margin-bottom: 5px;
+.sudoku-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cbd5e1;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+    background-color: #ffffff;
+    font-size: clamp(0.9rem, 3.5vw, 1.4rem);
 }
 
-.container p {
-  margin-top: 0;
-  margin-bottom: 10px;
+/* 3x3 ブロックの太枠設定 */
+.sudoku-cell:nth-child(3n) {
+    border-right: 2px solid #334155;
+}
+.sudoku-cell:nth-child(9n) {
+    border-right: none;
+}
+.sudoku-cell:nth-child(n+19):nth-child(-n+27),
+.sudoku-cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid #334155;
 }
 
-.container h2 {
-  margin: 20px 0 5px;
-  font-size: 18px;
+/* 選択・ハイライト状態 */
+.sudoku-cell.selected {
+    background-color: #fef08a !important;
+    box-shadow: inset 0 0 0 2px #eab308;
 }
 
-/* --------------------
-   共通ボタン
--------------------- */
-
-button {
-  border: none;
-  border-radius: 12px;
-  background: #4CAF50;
-  color: white;
-  cursor: pointer;
+.sudoku-cell.highlighted-peer {
+    background-color: #f1f5f9;
 }
 
-/* --------------------
-   段ボタン
--------------------- */
-
-#dan-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 300px;
-  margin: 8px auto 25px;
+.sudoku-cell.highlighted-same {
+    background-color: #e0f2fe;
+    color: #0369a1;
 }
 
-.dan-btn {
-  width: 90px;
-  height: 40px;
-  font-size: 15px;
+.sudoku-cell.fixed {
+    color: #1e293b;
+    font-weight: 900;
+    background-color: #f8fafc;
 }
 
-/* --------------------
-   レベルボタン
--------------------- */
-
-#level-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 8px auto 30px;
+.sudoku-cell.user-entered {
+    color: #2563eb;
 }
 
-.level-btn {
-  width: 90px;
-  height: 40px;
-  font-size: 15px;
+.sudoku-cell.error {
+    background-color: #fecdd3 !important;
+    color: #e11d48 !important;
+    animation: shake 0.25s ease-in-out;
 }
 
-/* --------------------
-   メニューボタン
--------------------- */
-
-#main-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 10px;
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
 }
 
-.menu-btn {
-  width: 140px;
-  height: 44px;
-  font-size: 18px;
+/* スクロールバー非表示 */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
 }
-
-.back-btn {
-  width: 90px;
-  height: 36px;
-  font-size: 16px;
-  background: #4A90E2;
-}
-
-#howto-btn {
-  width: 292px;
-  height: 44px;
-  font-size: 18px;
-  background: #f4b183;
-}
-
-/* --------------------
-   ロック表示
--------------------- */
-
-.locked {
-  background-color: #ff6666 !important;
-}
-
-/* --------------------
-   ゲーム画面
--------------------- */
-#game {
-  max-width: 420px;
-  margin: 4px auto;
-  text-align: center;
-}
-
-#game-header {
-  display: grid;
-  grid-template-columns: 90px 1fr 90px;
-  align-items: center;
-  margin-bottom: 6px;
-}
-
-#game-header h2 {
-  margin: 0;
-  text-align: center;
-  font-size: 26px;
-}
-
-#board-frame {
-  display: inline-block;
-  border: 3px solid black;
-  margin: 8px auto 20px;
-}
-
-#board {
-  display: grid;
-  grid-template-columns: repeat(9, 40px);
-  grid-template-rows: repeat(9, 40px);
-  gap: 0;
-}
-
-.cell {
-  width: 40px;
-  height: 40px;
-  border: 1px solid black;
-  box-sizing: border-box;
-}
-
-/* 3列ごとの太線 */
-
-.cell:nth-child(3n) {
-  border-right: 3px solid black;
-}
-
-/* 3行ごとの太線 */
-
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54) {
-  border-bottom: 3px solid black;
-}
-
-#game-info {
-  text-align: right;
-  font-size: 14px;
-  color: #666;
-}
-
-/* --------------------
-   ゲーム操作ボタン
--------------------- */
-
-/* 回答ボタン（盤面と同じ幅） */
-.answer-buttons {
-  width: 360px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin: 0 auto 8px;
-}
-
-.answer-btn,
-.erase-btn {
-  height: 50px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.answer-btn {
-  background: #4CAF50;
-}
-
-.erase-btn {
-  background: #9E9E9E;
-  color: white;
-}
-
-/* ヒント・チェック・ミス */
-.control-row {
-  width: 360px;
-  margin: 12px auto 16px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-}
-
-.hint-btn,
-.check-btn {
-  width: 85px;
-  height: 38px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.hint-btn {
-  background: #ffb6d5;
-  color: #333;
-}
-
-.check-btn {
-  background: #ffe066;
-  color: #333;
-}
-
-.miss-count {
-  color: red;
-  font-size: 14px;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-/* 下のボタン */
-.bottom-buttons {
-  width: 360px;
-  margin: 0 auto 10px;
-
-  display: flex;
-  gap: 10px;
-}
-
-.restart-btn,
-.next-btn {
-  flex: 1;
-  height: 38px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.restart-btn {
-  background: #4A90E2;
-}
-
-.next-btn {
-  background: #f4b183;
-  color: #333;
-}
-
-/* --------------------
-   選択中のマス
--------------------- */
-
-.cell.selected {
-  background-color: #bde3ff;
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
