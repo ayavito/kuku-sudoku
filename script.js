@@ -1,8 +1,5 @@
-// script.js (全コード)
 let currentStage = 3;
 let selectedCellIndex = null;
-let timerInterval = null;
-let secondsElapsed = 0;
 let currentDifficulty = 'medium';
 
 const puzzleDatabase = {
@@ -37,8 +34,6 @@ let solutionBoard = [];
 let sudokuGridEl;
 let stageButtonsContainer;
 let inputButtonsContainer;
-let currentStageBadge;
-let timerTextEl;
 let difficultySelect;
 let btnNewGame;
 let btnErase;
@@ -46,38 +41,10 @@ let btnCheck;
 let victoryModal;
 let btnModalNext;
 
-function playTone(freq, duration = 0.1, type = 'sine') {
-    try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + duration);
-    } catch (e) {}
-}
-
-function playSuccessSound() {
-    playTone(523.25, 0.12);
-    setTimeout(() => playTone(659.25, 0.12), 120);
-    setTimeout(() => playTone(783.99, 0.25), 240);
-}
-
-function playErrorSound() {
-    playTone(220, 0.15, 'sawtooth');
-}
-
 function initApp() {
     sudokuGridEl = document.getElementById('sudokuGrid');
     stageButtonsContainer = document.getElementById('stageButtonsContainer');
     inputButtonsContainer = document.getElementById('inputButtonsContainer');
-    currentStageBadge = document.getElementById('currentStageBadge');
-    timerTextEl = document.getElementById('timerText');
     difficultySelect = document.getElementById('difficultySelect');
     btnNewGame = document.getElementById('btnNewGame');
     btnErase = document.getElementById('btnErase');
@@ -96,9 +63,9 @@ function renderStageButtons() {
     stageButtonsContainer.innerHTML = '';
     for (let i = 1; i <= 9; i++) {
         const btn = document.createElement('button');
-        btn.className = `px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap transition active:scale-95 flex-1 min-w-[58px] ${
+        btn.className = `px-2.5 py-1 rounded-lg text-xs font-extrabold whitespace-nowrap transition active:scale-95 flex-1 ${
             i === currentStage 
-                ? 'bg-amber-500 text-white shadow-md' 
+                ? 'bg-amber-500 text-white shadow' 
                 : 'bg-amber-100/70 text-amber-900 hover:bg-amber-200'
         }`;
         btn.innerText = `${i}の段`;
@@ -109,11 +76,9 @@ function renderStageButtons() {
 
 function setStage(stage) {
     currentStage = stage;
-    if (currentStageBadge) currentStageBadge.innerText = `${currentStage}の段`;
     renderStageButtons();
     renderInputButtons();
     renderGrid();
-    playTone(440 + stage * 20, 0.08);
 }
 
 function renderInputButtons() {
@@ -121,19 +86,8 @@ function renderInputButtons() {
     inputButtonsContainer.innerHTML = '';
     for (let multiplier = 1; multiplier <= 9; multiplier++) {
         const btn = document.createElement('button');
-        btn.className = 'bg-slate-100 hover:bg-amber-100 active:bg-amber-200 border border-slate-200 hover:border-amber-300 rounded-xl py-2.5 px-1 font-bold transition text-center shadow-sm flex flex-col items-center justify-center active:scale-95';
-        
-        const formulaSpan = document.createElement('span');
-        formulaSpan.className = 'text-sm font-extrabold text-slate-800';
-        formulaSpan.innerText = `${currentStage}×${multiplier}`;
-        
-        const resultSpan = document.createElement('span');
-        resultSpan.className = 'text-[11px] text-amber-600 font-bold';
-        resultSpan.innerText = `= ${currentStage * multiplier}`;
-
-        btn.appendChild(formulaSpan);
-        btn.appendChild(resultSpan);
-
+        btn.className = 'bg-slate-100 hover:bg-amber-100 active:bg-amber-200 border border-slate-200 hover:border-amber-300 rounded-lg py-2 font-extrabold text-sm text-slate-800 transition text-center shadow-sm active:scale-95';
+        btn.innerText = `${currentStage}×${multiplier}`; // 式のみ表記
         btn.addEventListener('click', () => handleInputNumber(multiplier));
         inputButtonsContainer.appendChild(btn);
     }
@@ -150,8 +104,6 @@ function loadNewGame() {
     solutionBoard = selected.solution.split('').map(v => parseInt(v, 10));
 
     selectedCellIndex = null;
-    resetTimer();
-    startTimer();
     renderGrid();
 }
 
@@ -205,7 +157,6 @@ function renderGrid() {
 function selectCell(index) {
     selectedCellIndex = index;
     renderGrid();
-    playTone(600, 0.05);
 }
 
 function handleInputNumber(multiplier) {
@@ -214,7 +165,6 @@ function handleInputNumber(multiplier) {
 
     currentBoard[selectedCellIndex] = multiplier;
     renderGrid();
-    playTone(500, 0.05);
     checkAutoCompletion();
 }
 
@@ -224,7 +174,6 @@ function handleErase() {
 
     currentBoard[selectedCellIndex] = 0;
     renderGrid();
-    playTone(300, 0.05);
 }
 
 function handleCheckAnswers() {
@@ -242,12 +191,9 @@ function handleCheckAnswers() {
     }
 
     if (hasErrors) {
-        playErrorSound();
         setTimeout(() => renderGrid(), 1200);
     } else if (isComplete) {
         triggerVictory();
-    } else {
-        playSuccessSound();
     }
 }
 
@@ -258,29 +204,11 @@ function checkAutoCompletion() {
 }
 
 function triggerVictory() {
-    stopTimer();
-    playSuccessSound();
     if (typeof confetti === 'function') {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-
-    if (timerTextEl) document.getElementById('finalTime').innerText = timerTextEl.innerText;
-    document.getElementById('finalStage').innerText = `${currentStage}の段`;
     if (victoryModal) victoryModal.classList.remove('hidden');
 }
-
-function startTimer() {
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-        secondsElapsed++;
-        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
-        const secs = String(secondsElapsed % 60).padStart(2, '0');
-        if (timerTextEl) timerTextEl.innerText = `${mins}:${secs}`;
-    }, 1000);
-}
-
-function stopTimer() { clearInterval(timerInterval); }
-function resetTimer() { stopTimer(); secondsElapsed = 0; if (timerTextEl) timerTextEl.innerText = "00:00"; }
 
 function setupEventListeners() {
     if (btnNewGame) btnNewGame.addEventListener('click', loadNewGame);

@@ -2,113 +2,77 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>九九ナンプレ - Multiplication Table Sudoku</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>九九ナンプレ</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome (アイコン) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Canvas Confetti (クリア演出) -->
+    <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- CSSファイルの読み込み -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-amber-50 text-slate-800 min-h-screen flex flex-col items-center p-3 sm:p-6">
+<body class="bg-amber-50 text-slate-800 h-screen w-screen overflow-hidden flex flex-col justify-between p-2 select-none">
 
-    <div class="w-full max-w-lg flex flex-col items-center gap-3">
-        
-        <!-- ヘッダー -->
-        <header class="text-center w-full mt-1">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-amber-800 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-calculator text-amber-600"></i> 九九ナンプレ
-            </h1>
-            <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1">
-                マスには<span class="text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">九九の答え</span>が入ります！
-            </p>
-        </header>
+    <!-- ヘッダー -->
+    <header class="text-center py-0.5">
+        <h1 class="text-xl font-extrabold text-amber-800 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-calculator text-amber-600"></i> 九九ナンプレ
+        </h1>
+    </header>
 
-        <!-- 段の選択 -->
-        <div class="w-full bg-white rounded-2xl p-3 shadow-md border border-amber-200">
-            <div class="text-xs font-bold text-amber-800 mb-2 flex items-center justify-between">
-                <span><i class="fa-solid fa-layer-group"></i> 表示する段を選択:</span>
-                <span id="currentStageBadge" class="bg-amber-500 text-white px-2 py-0.5 rounded-full text-xs font-bold">3の段</span>
-            </div>
-            <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1" id="stageButtonsContainer"></div>
+    <!-- 段の選択 -->
+    <div class="w-full max-w-md mx-auto bg-white rounded-xl p-1.5 shadow-sm border border-amber-200">
+        <div class="flex gap-1 overflow-x-auto no-scrollbar" id="stageButtonsContainer"></div>
+    </div>
+
+    <!-- コントロールバー（タイマー削除） -->
+    <div class="w-full max-w-md mx-auto flex items-center justify-between bg-white px-3 py-1 rounded-lg shadow-sm border border-slate-200 text-xs font-bold">
+        <div class="flex items-center gap-1.5">
+            <span class="text-slate-500"><i class="fa-solid fa-signal"></i> 難易度:</span>
+            <select id="difficultySelect" class="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-slate-700 focus:outline-none">
+                <option value="easy">かんたん</option>
+                <option value="medium" selected>ふつう</option>
+                <option value="hard">むずかしい</option>
+            </select>
         </div>
+        <button id="btnNewGame" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-2.5 py-1 rounded text-xs font-bold transition flex items-center gap-1 shadow-sm">
+            <i class="fa-solid fa-rotate-right"></i> 新しい問題
+        </button>
+    </div>
 
-        <!-- コントロールバー -->
-        <div class="w-full flex items-center justify-between bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 text-sm font-bold">
-            <div class="flex items-center gap-2">
-                <span class="text-slate-500"><i class="fa-solid fa-signal"></i> 難易度:</span>
-                <select id="difficultySelect" class="bg-slate-100 border border-slate-300 rounded-lg px-2 py-1 text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-400">
-                    <option value="easy">かんたん</option>
-                    <option value="medium" selected>ふつう</option>
-                    <option value="hard">むずかしい</option>
-                </select>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-1 text-slate-700 font-mono text-base">
-                    <i class="fa-regular fa-clock text-amber-600"></i>
-                    <span id="timerText">00:00</span>
-                </div>
-                <button id="btnNewGame" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
-                    <i class="fa-solid fa-rotate-right"></i> 新しい問題
-                </button>
-            </div>
+    <!-- 9x9 ナンプレ盤面（完全な正方形） -->
+    <div class="w-full max-w-md mx-auto flex-1 flex items-center justify-center my-1 min-h-0">
+        <div id="sudokuGrid" class="sudoku-grid bg-white"></div>
+    </div>
+
+    <!-- 回答入力ボタン（式のみ表記） -->
+    <div class="w-full max-w-md mx-auto bg-white rounded-xl p-2 shadow-sm border border-slate-200 flex flex-col gap-1.5">
+        <div class="grid grid-cols-3 gap-1.5" id="inputButtonsContainer"></div>
+        <div class="flex gap-1.5">
+            <button id="btnErase" class="flex-1 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 active:scale-95 py-1.5 rounded-lg font-bold text-xs transition flex items-center justify-center gap-1">
+                <i class="fa-solid fa-eraser"></i> 消去
+            </button>
+            <button id="btnCheck" class="flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 active:scale-95 py-1.5 rounded-lg font-bold text-xs transition flex items-center justify-center gap-1">
+                <i class="fa-solid fa-circle-check"></i> 答え合わせ
+            </button>
         </div>
-
-        <!-- 9x9 ナンプレ盤面 -->
-        <div class="w-full relative">
-            <div id="sudokuGrid" class="sudoku-grid bg-white"></div>
-        </div>
-
-        <!-- 回答入力ボタン（九九の式） -->
-        <div class="w-full bg-white rounded-2xl p-3 shadow-md border border-slate-200 flex flex-col gap-2">
-            <div class="text-xs font-bold text-slate-500 flex justify-between items-center px-1">
-                <span><i class="fa-solid fa-hand-pointer"></i> 入力する式を選択:</span>
-                <span class="text-slate-400 font-normal text-[11px]">マスには答えが入ります</span>
-            </div>
-            <div class="grid grid-cols-3 gap-2" id="inputButtonsContainer"></div>
-            <div class="flex gap-2 mt-1">
-                <button id="btnErase" class="flex-1 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 active:scale-95 py-2.5 rounded-xl font-bold text-sm transition flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-eraser"></i> 消去
-                </button>
-                <button id="btnCheck" class="flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 active:scale-95 py-2.5 rounded-xl font-bold text-sm transition flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-circle-check"></i> 答え合わせ
-                </button>
-            </div>
-        </div>
-
     </div>
 
     <!-- クリアモーダル -->
     <div id="victoryModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl border-4 border-amber-400 transform transition-all scale-95">
-            <div class="w-16 h-16 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+        <div class="bg-white rounded-2xl p-5 max-w-xs w-full text-center shadow-2xl border-4 border-amber-400">
+            <div class="w-12 h-12 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-2">
                 <i class="fa-solid fa-trophy"></i>
             </div>
-            <h2 class="text-2xl font-extrabold text-slate-800 mb-1">クリアおめでとう！</h2>
-            <p class="text-slate-600 text-sm mb-4">見事に九九ナンプレを解き明かしました！</p>
-            
-            <div class="bg-amber-50 rounded-2xl p-3 mb-5 border border-amber-200 flex justify-around">
-                <div>
-                    <div class="text-xs text-slate-500 font-bold">クリアタイム</div>
-                    <div id="finalTime" class="text-lg font-mono font-bold text-amber-700">00:00</div>
-                </div>
-                <div class="border-r border-amber-200"></div>
-                <div>
-                    <div class="text-xs text-slate-500 font-bold">挑戦した段</div>
-                    <div id="finalStage" class="text-lg font-bold text-amber-700">3の段</div>
-                </div>
-            </div>
-
-            <button id="btnModalNext" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-extrabold py-3 rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition text-base">
+            <h2 class="text-xl font-extrabold text-slate-800 mb-1">クリアおめでとう！</h2>
+            <p class="text-slate-600 text-xs mb-3">見事に解き明かしました！</p>
+            <button id="btnModalNext" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-extrabold py-2.5 rounded-xl shadow active:scale-95 transition text-sm">
                 つぎの問題に挑戦！
             </button>
         </div>
     </div>
 
-    <!-- JavaScriptファイルの読み込み -->
     <script src="script.js"></script>
 </body>
 </html>

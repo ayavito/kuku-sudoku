@@ -6,31 +6,33 @@ body {
     user-select: none;
 }
 
-/* 9x9 ナンプレ盤面 */
+/* 9x9 正方形ナンプレ盤面 */
 .sudoku-grid {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
     aspect-ratio: 1 / 1;
-    width: 100%;
-    max-width: 500px;
+    height: 100%;
+    max-height: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    border: 3px solid #334155;
-    border-radius: 12px;
+    border: 2.5px solid #334155;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .sudoku-cell {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #cbd5e1;
+    border: 0.5px solid #cbd5e1;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
+    transition: background-color 0.1s ease;
     background-color: #ffffff;
-    font-size: clamp(0.9rem, 3.5vw, 1.4rem);
+    font-size: clamp(0.75rem, 3.8vw, 1.25rem);
+    line-height: 1;
 }
 
 /* 3x3 ブロックの太枠設定 */
@@ -61,7 +63,7 @@ body {
 }
 
 .sudoku-cell.fixed {
-    color: #1e293b;
+    color: #0f172a;
     font-weight: 900;
     background-color: #f8fafc;
 }
@@ -73,13 +75,6 @@ body {
 .sudoku-cell.error {
     background-color: #fecdd3 !important;
     color: #e11d48 !important;
-    animation: shake 0.25s ease-in-out;
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-3px); }
-    75% { transform: translateX(3px); }
 }
 
 /* スクロールバー非表示 */
