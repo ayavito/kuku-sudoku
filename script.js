@@ -1,11 +1,10 @@
-// ゲームの状態管理
-let currentStage = 3; // デフォルト: 3の段
+// script.js (全コード)
+let currentStage = 3;
 let selectedCellIndex = null;
 let timerInterval = null;
 let secondsElapsed = 0;
 let currentDifficulty = 'medium';
 
-// パズルデータベース (内部的には標準ナンプレの1〜9で保持)
 const puzzleDatabase = {
     easy: [
         {
@@ -35,20 +34,18 @@ let initialBoard = [];
 let currentBoard = [];
 let solutionBoard = [];
 
-// HTML要素の取得
-const sudokuGridEl = document.getElementById('sudokuGrid');
-const stageButtonsContainer = document.getElementById('stageButtonsContainer');
-const inputButtonsContainer = document.getElementById('inputButtonsContainer');
-const currentStageBadge = document.getElementById('currentStageBadge');
-const timerTextEl = document.getElementById('timerText');
-const difficultySelect = document.getElementById('difficultySelect');
-const btnNewGame = document.getElementById('btnNewGame');
-const btnErase = document.getElementById('btnErase');
-const btnCheck = document.getElementById('btnCheck');
-const victoryModal = document.getElementById('victoryModal');
-const btnModalNext = document.getElementById('btnModalNext');
+let sudokuGridEl;
+let stageButtonsContainer;
+let inputButtonsContainer;
+let currentStageBadge;
+let timerTextEl;
+let difficultySelect;
+let btnNewGame;
+let btnErase;
+let btnCheck;
+let victoryModal;
+let btnModalNext;
 
-// 効果音再生
 function playTone(freq, duration = 0.1, type = 'sine') {
     try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -75,16 +72,27 @@ function playErrorSound() {
     playTone(220, 0.15, 'sawtooth');
 }
 
-// 初期化処理
 function initApp() {
+    sudokuGridEl = document.getElementById('sudokuGrid');
+    stageButtonsContainer = document.getElementById('stageButtonsContainer');
+    inputButtonsContainer = document.getElementById('inputButtonsContainer');
+    currentStageBadge = document.getElementById('currentStageBadge');
+    timerTextEl = document.getElementById('timerText');
+    difficultySelect = document.getElementById('difficultySelect');
+    btnNewGame = document.getElementById('btnNewGame');
+    btnErase = document.getElementById('btnErase');
+    btnCheck = document.getElementById('btnCheck');
+    victoryModal = document.getElementById('victoryModal');
+    btnModalNext = document.getElementById('btnModalNext');
+
     renderStageButtons();
     renderInputButtons();
     setupEventListeners();
     loadNewGame();
 }
 
-// 段切り替えボタンの生成
 function renderStageButtons() {
+    if (!stageButtonsContainer) return;
     stageButtonsContainer.innerHTML = '';
     for (let i = 1; i <= 9; i++) {
         const btn = document.createElement('button');
@@ -99,18 +107,17 @@ function renderStageButtons() {
     }
 }
 
-// 段の変更と盤面再描画
 function setStage(stage) {
     currentStage = stage;
-    currentStageBadge.innerText = `${currentStage}の段`;
+    if (currentStageBadge) currentStageBadge.innerText = `${currentStage}の段`;
     renderStageButtons();
     renderInputButtons();
     renderGrid();
     playTone(440 + stage * 20, 0.08);
 }
 
-// 九九の式ボタン（回答ボタン）の生成
 function renderInputButtons() {
+    if (!inputButtonsContainer) return;
     inputButtonsContainer.innerHTML = '';
     for (let multiplier = 1; multiplier <= 9; multiplier++) {
         const btn = document.createElement('button');
@@ -132,9 +139,8 @@ function renderInputButtons() {
     }
 }
 
-// 新しい問題の読み込み
 function loadNewGame() {
-    const diff = difficultySelect.value;
+    const diff = difficultySelect ? difficultySelect.value : 'medium';
     currentDifficulty = diff;
     const puzzles = puzzleDatabase[diff] || puzzleDatabase['medium'];
     const selected = puzzles[Math.floor(Math.random() * puzzles.length)];
@@ -149,8 +155,8 @@ function loadNewGame() {
     renderGrid();
 }
 
-// 盤面の描画（※答えを表示）
 function renderGrid() {
+    if (!sudokuGridEl) return;
     sudokuGridEl.innerHTML = '';
 
     const selectedVal = selectedCellIndex !== null ? currentBoard[selectedCellIndex] : null;
@@ -170,7 +176,7 @@ function renderGrid() {
         const isFixed = initialBoard[i] !== 0;
 
         if (val !== 0) {
-            cell.innerText = currentStage * val; // 九九の答えを表示
+            cell.innerText = currentStage * val;
         } else {
             cell.innerText = '';
         }
@@ -254,11 +260,13 @@ function checkAutoCompletion() {
 function triggerVictory() {
     stopTimer();
     playSuccessSound();
-    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    if (typeof confetti === 'function') {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
 
-    document.getElementById('finalTime').innerText = timerTextEl.innerText;
+    if (timerTextEl) document.getElementById('finalTime').innerText = timerTextEl.innerText;
     document.getElementById('finalStage').innerText = `${currentStage}の段`;
-    victoryModal.classList.remove('hidden');
+    if (victoryModal) victoryModal.classList.remove('hidden');
 }
 
 function startTimer() {
@@ -267,23 +275,25 @@ function startTimer() {
         secondsElapsed++;
         const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
         const secs = String(secondsElapsed % 60).padStart(2, '0');
-        timerTextEl.innerText = `${mins}:${secs}`;
+        if (timerTextEl) timerTextEl.innerText = `${mins}:${secs}`;
     }, 1000);
 }
 
 function stopTimer() { clearInterval(timerInterval); }
-function resetTimer() { stopTimer(); secondsElapsed = 0; timerTextEl.innerText = "00:00"; }
+function resetTimer() { stopTimer(); secondsElapsed = 0; if (timerTextEl) timerTextEl.innerText = "00:00"; }
 
 function setupEventListeners() {
-    btnNewGame.addEventListener('click', loadNewGame);
-    btnErase.addEventListener('click', handleErase);
-    btnCheck.addEventListener('click', handleCheckAnswers);
-    difficultySelect.addEventListener('change', loadNewGame);
+    if (btnNewGame) btnNewGame.addEventListener('click', loadNewGame);
+    if (btnErase) btnErase.addEventListener('click', handleErase);
+    if (btnCheck) btnCheck.addEventListener('click', handleCheckAnswers);
+    if (difficultySelect) difficultySelect.addEventListener('change', loadNewGame);
 
-    btnModalNext.addEventListener('click', () => {
-        victoryModal.classList.add('hidden');
-        loadNewGame();
-    });
+    if (btnModalNext) {
+        btnModalNext.addEventListener('click', () => {
+            if (victoryModal) victoryModal.classList.add('hidden');
+            loadNewGame();
+        });
+    }
 
     document.addEventListener('keydown', (e) => {
         if (selectedCellIndex === null) return;
@@ -296,4 +306,8 @@ function setupEventListeners() {
     });
 }
 
-window.addEventListener('DOMContentLoaded', initApp);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
